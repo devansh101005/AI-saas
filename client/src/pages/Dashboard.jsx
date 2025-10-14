@@ -59,7 +59,7 @@ useEffect(()=> {
         )
       }
     </div>
-    <Footer />
+    
     </div>
 
   )
