@@ -12,7 +12,7 @@ export default function Footer() {
                      }
                     />
                     <p className="mt-6 text-sm">
-                        Experience the power of AI with QuickAi. <br />
+                        Experience the power of AI with devX.ai <br />
                         Tranform your content creation with our suite of premium AI tools. Write articlews ,generte images ,and enhance your work flow
                     </p>
                 </div>
@@ -39,7 +39,7 @@ export default function Footer() {
                 </div>
             </div>
             <p className="pt-4 text-center text-xs md:text-sm pb-5">
-                Copyright 2025 © <a href="https://prebuiltui.com">Quick Ai</a>. All Right Reserved.
+                Copyright 2025 © <a href="https://prebuiltui.com">devX.ai</a>. All Right Reserved.
             </p>
         </footer>
     );
