@@ -4,6 +4,7 @@ import {dummyCreationData} from '../assets/assets'
 import { Gem, Sparkles } from 'lucide-react';
 import { Protect } from '@clerk/clerk-react';
 import CreationItem from '../components/CreationItem';
+import Footer from '../components/Footer';
 
 function Dashboard() {
 
@@ -58,8 +59,9 @@ useEffect(()=> {
         )
       }
     </div>
-
+    <Footer />
     </div>
+
   )
 }
 
