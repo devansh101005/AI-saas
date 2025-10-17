@@ -1,26 +1,33 @@
 import { clerkClient } from "@clerk/express";
 
-//Middleware to check userId and hasPreemium Plan
+//Middleware to check userId and hasPremium Plan
 
 export const auth =async (req,res,next) => {
        try {
-        const{userId,has}=await req.auth();
-        const hasPremium=await has({plan:'premium'});
+       // const{userId,has}=await req.auth();
+       const { userId } = req.auth;
+
+        //const hasPremiumPlan=await has({plan:'Premium'});
+
+
         const user=await clerkClient.users.getUser(userId);
 
-        if(!hasPremiumPlan && user.privateMetadatafree_usage){
+        const hasPremiumPlan = user.privateMetadata?.subscription === 'Premium' || 
+                              user.privateMetadata?.plan === 'Premium';
+
+        if(!hasPremiumPlan && user.privateMetadata?.free_usage){
             req.free_usage=user.privateMetadata.free_usage
         }
         else {
             await clerkClient.users.updateUserMetadata(userId,{
-                privateMetaData: {
+                privateMetadata: {
                     free_usage:0
                 }
             })
            
             req.free_usage=0;
         } 
-        req.plan=hasPremium ? 'premium' :'free';
+        req.plan=hasPremiumPlan ? 'Premium' :'free';
         next()
     } catch (error) {
         res.json({success :false,message:error.message})
