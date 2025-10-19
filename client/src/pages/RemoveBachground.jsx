@@ -1,13 +1,42 @@
 import { Eraser,Sparkles } from 'lucide-react';
 import React from 'react'
 import { useState } from 'react';
+import axios from 'axios'
+import { useAuth } from '@clerk/clerk-react';
+import toast from 'react-hot-toast';
+
+axios.defaults.baseURL =import.meta.env.VITE_BASE_URL;
 
 const RemoveBachground = () => {
 
   const [input,setInput] =useState('')
+
+  const [loading,setLoading]=useState(false)
+const [content,setContent]=useState('')
+
+const {getToken}=useAuth();
   
   const onSubmitHandler =async (e)=> {
     e.preventDefault();
+    try {
+      setLoading(true)
+
+    //const prompt =`Generate an image of ${input} in the style ${selectedStyle}`
+    const formData=new FormData()
+    formData.append('image',input)
+    const {data} =await axios.post('/api/ai/remove-image-background',formData,
+    {headers:{Authorization:`Bearer ${await getToken()}`}}
+   )
+   if(data.success){
+    setContent(data.content)
+   }else {
+    toast.error(data.message)
+   }
+
+    }catch(error) {
+    toast.error(data.message)
+    }
+    setLoading(false)
   }
   return (
 
@@ -30,10 +59,16 @@ const RemoveBachground = () => {
         and other image formats 
        </p>
         
-        <button className='w-full flex justify-center items-center gap-2
+        <button disabled ={loading} className='w-full flex justify-center items-center gap-2
         bg-gradient-to-r from-[#F6AB41] to-[#FF4938] text-white px-4 py-2 mt-6
         text-sm rounded-lg cursor-pointer '>
-          <Eraser className='w-5' />
+
+          {loading ? <span className='w-4 h-4 my-1 rounded-full border-2
+          border-t-transparent animate-spin'>
+
+          </span> :<Eraser className='w-5' />}
+
+          
            Remove Background
         </button>
       </form>
@@ -49,7 +84,9 @@ const RemoveBachground = () => {
 
         </div>
 
-        <div className='flex-1 flex justify-center items-center'>
+        {
+          !content ? (
+           <div className='flex-1 flex justify-center items-center'>
           <div className='text-sm flex flex-col items-center gap-5
           text-gray-400'>
             <Eraser className='w-9 h-9 ' />
@@ -57,6 +94,12 @@ const RemoveBachground = () => {
 
           </div>
         </div>
+          ): (
+           <img src ={content} alt ="image" className='mt-3 w-full h-full'/>
+          )
+        }
+
+        
 
       </div>
     
