@@ -3,6 +3,8 @@ import React from 'react'
 import { dummyPublishedCreationData } from '../assets/assets'
 import { Heart } from 'lucide-react'
 import { useState,useEffect } from 'react'
+import axios from 'axios'
+axios.defaults.baseURL =import.meta.env.VITE_BASE_URL;
 
 function Community() {
 

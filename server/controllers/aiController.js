@@ -190,7 +190,7 @@ res.json({success:true,content:secure_url})
     try {
         const {userId} =req.auth();
         const {object} =req.body();
-        const {image} =req.file;
+        const image =req.file;
         const plan =req.plan;
         //const free_usage=req.free_usage;
 
