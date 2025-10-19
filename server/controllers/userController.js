@@ -58,7 +58,7 @@ else {
     message='Creation Liked'
 }
 
-const formattedArray=`{${updatedLikes.json(',')}}`
+const formattedArray=`{${updatedLikes.join(',')}}`
 
 
 
