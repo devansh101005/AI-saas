@@ -5,6 +5,9 @@ import {v2 as cloudinary} from 'cloudinary';
 import axios from "axios";
 import fs from 'fs'
 import pdf from 'pdf-parse-fork'
+import FormData from "form-data";
+//import cloudinary from "../configs/cloudinary.js"
+
 
 const AI = new OpenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -104,46 +107,59 @@ res.json({success:true,content})
 
 
 
-    export const generateImage =async (req,res)=> {
-    try {
-        const {userId} =req.auth();
-        const {prompt,publish} =req.body;
-        const plan =req.plan;
-        //const free_usage=req.free_usage;
-
-        if(plan !== 'Premium' ){
-            return res.json({success: false , message:"This feature only valid for premium subscription"})
-                
-        }
-
-        const formData = new FormData()
-        formData.append('prompt', prompt)
-
-const {data}=await axios.post("https://clipdrop-api.co/text-to-image/v1",formData,{
-    headers:{'x-api-key':process.env.CLIPDROP_API_KEY,},
-    responseType:"arraybuffer"
-})
-
-const base64Image=`data:image/png;base64,${Buffer.from(data,'binary').
-    toString('base64')
-}`
-
-const {secure_url}=await cloudinary.uploader.upload(base64Image)
-await sql`INSERT INTO creations(user_id,prompt,content,type,publish) 
-VALUES(${userId},${prompt},${secure_url}, 'image',${publish ?? false}`;
 
 
-res.json({success:true,content:secure_url})
-    }
-    
-        catch (error){
-       console.log(error.message)
-       res.json({success:false,message:error.message})
-        }
+export const generateImage = async (req, res) => {
+  try {
+    console.log("generate-image route hit ✅");
+    console.log("User Plan:", req.plan);
 
+    const { userId } = req.auth();
+    const { prompt, publish } = req.body;
+    const plan = req.plan;
+    const free_usage = req.free_usage;
+
+    if (plan !== "Premium") {
+      return res.json({
+        success: false,
+        message: "This feature is only valid for premium subscription.",
+      });
     }
 
+    const formData = new FormData();
+    formData.append("prompt", prompt);
 
+    const { data } = await axios.post(
+      "https://clipdrop-api.co/text-to-image/v1",
+      formData,
+      {
+        headers: {
+          ...formData.getHeaders(),
+          "x-api-key": process.env.CLIPDROP_API_KEY,
+        },
+        responseType: "arraybuffer",
+      }
+    );
+
+    // Convert binary → base64
+    const base64Image = `data:image/png;base64,${Buffer.from(data, "binary").toString("base64")}`;
+
+    const uploadResult = await cloudinary.uploader.upload(base64Image);
+
+    await sql`
+      INSERT INTO creations(user_id, prompt, content, type, publish)
+      VALUES(${userId}, ${prompt}, ${uploadResult.secure_url}, 'image', ${publish ?? false})
+    `;
+
+    res.json({ success: true, content: uploadResult.secure_url });
+  } catch (error) {
+    console.error("Error in generateImage:", error.response?.data || error.message);
+    res.status(500).json({
+      success: false,
+      message: error.response?.data?.error || error.message,
+    });
+  }
+};
 
 
     export const removeImageBackground =async (req,res)=> {
