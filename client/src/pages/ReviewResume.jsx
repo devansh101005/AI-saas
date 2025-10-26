@@ -21,7 +21,7 @@ const {getToken}=useAuth();
     const formData =new FormData();
     formData.append('resume',input)
 
-   const {data} =await axios.post('/api/ai/resume-review',{prompt},
+   const {data} =await axios.post('/api/ai/resume-review',formData,
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
