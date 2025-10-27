@@ -20,9 +20,9 @@ const {getToken}=useAuth();
     e.preventDefault();
     try {
       setLoading(true)
-      if(object.split('').length>2){
-        return toast ('Please enter only one object name')
-      }
+      // if(object.split('').length>2){
+      //   return toast ('Please enter only one object name')
+      // }
     const formData=new FormData()
     formData.append('image',input)
     formData.append('object',object)

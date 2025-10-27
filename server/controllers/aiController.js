@@ -205,7 +205,7 @@ res.json({success:true,content:secure_url})
     export const removeImageObject =async (req,res)=> {
     try {
         const {userId} =req.auth();
-        const {object} =req.body();
+        const {object} =req.body;
         const image =req.file;
         const plan =req.plan;
         //const free_usage=req.free_usage;
@@ -224,7 +224,7 @@ const imageUrl=cloudinary.url(public_id,{
     resource_type:'image'
 })
 
-await sql`INSERT INTO creations(user_id,prompt,content,type,publish) 
+await sql`INSERT INTO creations(user_id,prompt,content,type) 
 VALUES(${userId},${`Remove ${object} from image`},${imageUrl}, 'image')`;
 
 
