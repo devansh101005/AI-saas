@@ -119,7 +119,6 @@ const onSubmitHandler =async (e)=> {
         <div className='flex items-center gap-3'>
 <Image className='w-5 h-5 text-[#00AD25]' />
 <h1 className= 'text-xl font-semibold'>Generated Images </h1>
-
         </div>
 
         {
@@ -133,8 +132,16 @@ const onSubmitHandler =async (e)=> {
           </div>
         </div>
           ) : (
-           <div className='mt-3 h-full'> 
-           <img src ={content} alt ="image" className="w-full h-full"/> 
+           <div className='mt-3 h-full flex-col gap-3'> 
+           <img src ={content} alt ="image" className="w-full h-full rounded-lg"/> 
+
+           <a
+      href={content.replace('/upload/', '/upload/fl_attachment/')}
+      className="text-sm text-white bg-green-600 px-4 py-2 rounded-md
+      text-center hover:bg-green-700 transition"
+    >
+      ⬇ Download Image
+    </a>
 
            </div>
 

@@ -106,13 +106,10 @@ res.json({success:true,content})
     }
 
 
-
-
-
 export const generateImage = async (req, res) => {
   try {
-    console.log("generate-image route hit ✅");
-    console.log("User Plan:", req.plan);
+    // console.log("generate-image route hit ");
+    // console.log("User Plan:", req.plan);
 
     const { userId } = req.auth();
     const { prompt, publish } = req.body;
@@ -144,7 +141,7 @@ export const generateImage = async (req, res) => {
     // Convert binary → base64
     const base64Image = `data:image/png;base64,${Buffer.from(data, "binary").toString("base64")}`;
 
-    const uploadResult = await cloudinary.uploader.upload(base64Image);
+    const uploadResult = await cloudinary.uploader.upload(base64Image);    
 
     await sql`
       INSERT INTO creations(user_id, prompt, content, type, publish)
