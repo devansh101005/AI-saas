@@ -16,6 +16,7 @@ await connectCloudinary();
 const allowedOrigins = [
   process.env.CLIENT_URL, // e.g. "http://localhost:5173" or your production domain
   "http://localhost:5173",
+  "https://devxaiclient.vercel.app"
 ];
 
 app.use(
