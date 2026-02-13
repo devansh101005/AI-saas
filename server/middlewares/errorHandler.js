@@ -41,6 +41,14 @@ export const errorHandler = (err, req, res, next) => {
     });
   }
 
+  // AI API rate limit errors (e.g. Gemini 429)
+  if (err.status === 429 || err.code === 'rate_limit_exceeded') {
+    return res.status(429).json({
+      success: false,
+      message: 'AI service is temporarily busy. Please wait a moment and try again.',
+    });
+  }
+
   // Log the full error for debugging (server-side only, not sent to client)
   console.error('Unhandled error:', err);
 

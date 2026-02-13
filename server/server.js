@@ -10,6 +10,10 @@ import { apiLimiter } from "./middlewares/rateLimiter.js";
 
 const app = express();
 
+// Trust the first proxy (Vercel) — required for express-rate-limit
+// to correctly read client IP from X-Forwarded-For header
+app.set("trust proxy", 1);
+
 await connectCloudinary();
 
 // ── CORS: only allow requests from your frontend origin ──
