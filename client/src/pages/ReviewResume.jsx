@@ -1,7 +1,7 @@
 import { FileText, Sparkles,Eraser } from 'lucide-react';
 import React from 'react'
 import { useState } from 'react';
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
 import Markdown from 'react-markdown';
@@ -21,7 +21,7 @@ const {getToken}=useAuth();
     const formData =new FormData();
     formData.append('resume',input)
 
-   const {data} =await axios.post('/api/ai/resume-review',formData,
+   const {data} =await api.post('/api/ai/resume-review',formData,
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
@@ -44,14 +44,14 @@ const {getToken}=useAuth();
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkles className='w-6 text-[#00DA83]' />
           <h1 className='text-xl font-semibold'> Review Resume</h1>
 
         </div>
         <p className= 'mt-6 text-sm font-medium'>Upload Resume </p>
 
-        <input onChange={(e)=>setInput(e.target.files[0])}  type="file" accept='application/pdf*' className='w-full p-2 px-3 mt-2 outline-none text-sm
+        <input onChange={(e)=>setInput(e.target.files[0])}  type="file" accept='application/pdf' className='w-full p-2 px-3 mt-2 outline-none text-sm
         rounded-md border border-gray-300 text-gray-600' required />
 
        <p className='text-xs text-gray-500 font-lightmt-1'>Supports PDF Resume only
@@ -95,7 +95,7 @@ const {getToken}=useAuth();
           (
             <div className='mt-3 h-full overflow-y-scroll text-sm
             text-slate-600'>
-              <div className='reser-tw'>
+              <div className='reset-tw'>
               <Markdown>{content}</Markdown>
               </div>
               

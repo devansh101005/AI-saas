@@ -1,11 +1,9 @@
 import { Eraser,Sparkles } from 'lucide-react';
 import React from 'react'
 import { useState } from 'react';
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
-
-axios.defaults.baseURL =import.meta.env.VITE_BASE_URL;
 
 const RemoveBachground = () => {
 
@@ -24,7 +22,7 @@ const {getToken}=useAuth();
     //const prompt =`Generate an image of ${input} in the style ${selectedStyle}`
     const formData=new FormData()
     formData.append('image',input)
-    const {data} =await axios.post('/api/ai/remove-image-background',formData,
+    const {data} =await api.post('/api/ai/remove-image-background',formData,
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
@@ -34,7 +32,7 @@ const {getToken}=useAuth();
    }
 
     }catch(error) {
-    toast.error(data.message)
+    toast.error(error.message)
     }
     setLoading(false)
   }
@@ -46,7 +44,7 @@ const {getToken}=useAuth();
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkles className='w-6 text-[#FF4938]' />
           <h1 className='text-xl font-semibold'> Background Removal</h1>
 
@@ -55,7 +53,7 @@ const {getToken}=useAuth();
 
         <input onChange={(e)=>setInput(e.target.files[0])}  type="file" accept='image/*' className='w-full p-2 px-3 mt-2 outline-none text-sm
         rounded-md border border-gray-300 text-gray-600' required />
-       <p className='text-xs text-gray-500 font-lightmt-1'>Supports JPG,PNG,
+       <p className='text-xs text-gray-500 font-light mt-1'>Supports JPG,PNG,
         and other image formats 
        </p>
         

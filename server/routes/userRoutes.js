@@ -1,14 +1,17 @@
-import express from 'express'
-import { auth } from '../middlewares/auth.js';
-//import {userController} from '../controllers/userController.js'
-import { getPublishedCreations, getUserCreations, toggleLikeCreation } from '../controllers/userController.js';
+import express from "express";
+import { auth } from "../middlewares/auth.js";
+import { validate } from "../middlewares/validate.js";
+import { toggleLikeSchema } from "../validations/aiValidation.js";
+import {
+  getPublishedCreations,
+  getUserCreations,
+  toggleLikeCreation,
+} from "../controllers/userController.js";
 
+const userRouter = express.Router();
 
-const userRouter =express.Router();
+userRouter.get("/get-user-creations", auth, getUserCreations);
+userRouter.get("/get-published-creations", auth, getPublishedCreations);
+userRouter.post("/toggle-like-creation", auth, validate(toggleLikeSchema), toggleLikeCreation);
 
-userRouter.get('/get-user-creations',auth,getUserCreations)
-userRouter.get('/get-published-creations',auth,getPublishedCreations)
-userRouter.post('/get-like-creation',auth,toggleLikeCreation,)
-
-export default userRouter
-
+export default userRouter;

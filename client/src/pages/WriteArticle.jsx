@@ -1,12 +1,10 @@
 import { Edit, Sparkles } from 'lucide-react'
 import React from 'react'
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast'
-import Markdown from 'react-markdown'
-
-axios.defaults.baseURL=import.meta.env.VITE_BASE_URL; 
+import Markdown from 'react-markdown' 
 
 const WriteArticle = () => {
 
@@ -29,7 +27,7 @@ const onSubmitHandler =async (e)=> {
   try{
     setLoading(true)
     const prompt=`Write an article about ${input} in ${selectedLength.text}`
-    const {data} =await axios.post('/api/ai/generate-article',{prompt,
+    const {data} =await api.post('/api/ai/generate-article',{prompt,
       length:selectedLength.length},{
         headers:{Authorization:`Bearer ${await getToken()}`}
       }
@@ -52,7 +50,7 @@ const onSubmitHandler =async (e)=> {
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkles className='w-6 text-[#4A7AFF]' />
           <h1 className='text-xl font-semibold'> Article Configuartion</h1>
 
@@ -80,13 +78,12 @@ const onSubmitHandler =async (e)=> {
         text-sm rounded-lg cursor-pointer '>
 
           {
-            loading ? <span className='w-4 h-4 my-1 rounded-full border-2 
+            loading ? <span className='w-4 h-4 my-1 rounded-full border-2
             border-t-transparent animate-spin'>
 
             </span>
             : <Edit className='w-5' />
           }
-          <Edit className='w-5' />
            Generate article
         </button>
       </form>

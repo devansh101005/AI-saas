@@ -1,10 +1,8 @@
 import { Scissors, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
-
-axios.defaults.baseURL =import.meta.env.VITE_BASE_URL;
 
 
 const RemoveObject = () => {
@@ -26,7 +24,7 @@ const {getToken}=useAuth();
     const formData=new FormData()
     formData.append('image',input)
     formData.append('object',object)
-   const {data} =await axios.post('/api/ai/remove-object',formData,
+   const {data} =await api.post('/api/ai/remove-object',formData,
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
@@ -49,7 +47,7 @@ const {getToken}=useAuth();
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkles className='w-6 text-[#4A7AFF]' />
           <h1 className='text-xl font-semibold'> Object Removal</h1>
 

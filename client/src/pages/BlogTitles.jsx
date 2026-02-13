@@ -4,9 +4,7 @@ import { useState } from 'react'
 import React from 'react'
 import toast from 'react-hot-toast'
 import Markdown from 'react-markdown'
-import axios from 'axios'
-
-axios.defaults.baseURL =import.meta.env.VITE_BASE_URL;
+import api from '../lib/api'
 
 
 const BlogTitles = () => {
@@ -30,7 +28,7 @@ const onSubmitHandler =async (e)=> {
   try{
     setLoading(true)
     const prompt=`Genearte a blog title for the keyword ${input} in the category ${selectedCategory} `
-   const {data} =await axios.post('/api/ai/generate-blog-title',{prompt},
+   const {data} =await api.post('/api/ai/generate-blog-title',{prompt},
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
@@ -52,7 +50,7 @@ const onSubmitHandler =async (e)=> {
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkles className='w-6 text-[#8E37EB]' />
           <h1 className='text-xl font-semibold'> AI Title Geneartor</h1>
 

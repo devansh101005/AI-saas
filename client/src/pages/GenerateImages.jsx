@@ -1,11 +1,9 @@
 import React from 'react'
 import { useState } from 'react'
 import { Sparkles,Hash, Image, Sparkle } from 'lucide-react'
-import axios from 'axios'
+import api from '../lib/api'
 import { useAuth } from '@clerk/clerk-react';
 import toast from 'react-hot-toast';
-
-axios.defaults.baseURL =import.meta.VITE_BASE_URL;
 
 
 function GenerateImages() {
@@ -31,7 +29,7 @@ const onSubmitHandler =async (e)=> {
     setLoading(true)
 
     const prompt =`Generate an image of ${input} in the style ${selectedStyle}`
-    const {data} =await axios.post('/api/ai/generate-images',{prompt,publish},
+    const {data} =await api.post('/api/ai/generate-images',{prompt,publish},
     {headers:{Authorization:`Bearer ${await getToken()}`}}
    )
    if(data.success){
@@ -54,7 +52,7 @@ const onSubmitHandler =async (e)=> {
       {/* left col */}
       <form onSubmit ={onSubmitHandler} className='w-full max-w-lg p-4 bg-white rounded-lg border
       border-gray-200'>
-        <div className='flex-items-center gap-3'>
+        <div className='flex items-center gap-3'>
           <Sparkle className='w-6 text-[#00AD25]' />
           <h1 className='text-xl font-semibold'> AI Image Generator</h1>
 
