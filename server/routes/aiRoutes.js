@@ -21,7 +21,7 @@ import { upload } from "../configs/multer.js";
 const aiRouter = express.Router();
 
 // Apply AI-specific rate limiter to all AI routes
-aiRouter.use(aiLimiter);
+//aiRouter.use(aiLimiter);
 
 aiRouter.post("/generate-article", auth, validate(generateArticleSchema), generateArticle);
 aiRouter.post("/generate-blog-title", auth, validate(generateBlogTitleSchema), generateBlogTitle);
