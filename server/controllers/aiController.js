@@ -62,7 +62,7 @@ export const generateArticle = async (req, res, next) => {
     const cleanPrompt = sanitizePrompt(prompt);
 
     const response = await AI.chat.completions.create({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.0-flash-lite",
       messages: [{ role: "user", content: cleanPrompt }],
       temperature: 0.7,
       max_tokens: length,
@@ -92,7 +92,7 @@ export const generateBlogTitle = async (req, res, next) => {
     const cleanPrompt = sanitizePrompt(prompt);
 
     const response = await AI.chat.completions.create({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.0-flash-lite",
       messages: [{ role: "user", content: cleanPrompt }],
       temperature: 0.7,
       max_tokens: 100,
@@ -242,7 +242,7 @@ export const resumeReview = async (req, res, next) => {
     content:\n\n${pdfData.text}`;
 
     const response = await AI.chat.completions.create({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.0-flash-lite",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 1000,
