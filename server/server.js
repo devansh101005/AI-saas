@@ -6,7 +6,6 @@ import aiRouter from "./routes/aiRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import { apiLimiter } from "./middlewares/rateLimiter.js";
 
 const app = express();
 
@@ -39,9 +38,6 @@ app.use(
 
 app.use(express.json());
 app.use(clerkMiddleware());
-
-// ── General rate limiter for all API routes ──
-app.use("/api", apiLimiter);
 
 // ── Public health check route ──
 app.get("/", (req, res) => res.send("Server is live"));
