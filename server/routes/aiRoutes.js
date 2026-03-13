@@ -1,7 +1,6 @@
 import express from "express";
 import { auth } from "../middlewares/auth.js";
 import { validate } from "../middlewares/validate.js";
-import { aiLimiter } from "../middlewares/rateLimiter.js";
 import {
   generateArticleSchema,
   generateBlogTitleSchema,
@@ -19,9 +18,6 @@ import {
 import { upload } from "../configs/multer.js";
 
 const aiRouter = express.Router();
-
-// Apply AI-specific rate limiter to all AI routes
-aiRouter.use(aiLimiter);
 
 aiRouter.post("/generate-article", auth, validate(generateArticleSchema), generateArticle);
 aiRouter.post("/generate-blog-title", auth, validate(generateBlogTitleSchema), generateBlogTitle);
